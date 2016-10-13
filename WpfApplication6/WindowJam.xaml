@@ -1,0 +1,95 @@
+﻿<Window x:Class="InnogrityLinePackingClient.WindowJam"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InnogrityLinePackingClient"
+        xmlns:bstvc="clr-namespace:UnrelatedBarcodeStatusToVisibilityConverterNamespace"
+        mc:Ignorable="d"
+        Title="WindowJam" Height="600" Width="750" Left="200" Top="50" SizeChanged="Window_SizeChanged">
+    <Window.Resources>
+        <bstvc:DateTimeConvertor x:Key="DateTimeConvertorKey" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="533*"/>
+            <ColumnDefinition Width="159*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.DataContext >
+            <XmlDataProvider x:Name="Jamdataprovider" XPath="LABELS"/>
+        </Grid.DataContext >
+        <DockPanel Grid.ColumnSpan="2">
+            <TextBlock DockPanel.Dock="Top" FontSize="16">List of Jam Lable</TextBlock>
+            <ListView DockPanel.Dock="Top" x:Name="listJam" 
+                                  ItemsSource="{Binding XPath= LABEL}"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  Visibility="Visible" SelectionMode="Single"
+                                  ClipToBounds="True"
+                                  Background="GhostWhite" MouseDoubleClick="listbox_MouseDoubleClick" SelectionChanged="listJam_SelectionChanged" FontSize="16">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn DisplayMemberBinding="{Binding XPath=FL}" Header="Label" Width="100"/>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding XPath=Id}" Header="OEE ID" Width="70"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding XPath=DTIn, Converter={StaticResource DateTimeConvertorKey} }" Header="In Time" Width="150"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding XPath=DTOut, Converter={StaticResource DateTimeConvertorKey} }" Header="Out Time" Width="150"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding XPath=STnNo}" Header="STN No" Width="50"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding XPath=Stat}" Header="Status" Width="50"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding XPath=Reason}" Header="Reason" Width="50"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </DockPanel>
+
+        <Popup    Name="popup" IsOpen="true"     Placement="Center">
+            <Border BorderBrush="Black" BorderThickness="1" Background="Aqua">
+                <Grid  Height="302" VerticalAlignment="Top" Margin="0,0,13.8,0">
+
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="81.6" />
+                        <ColumnDefinition Width="313.6" />
+                        <ColumnDefinition Width="0*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="173*" />
+                        <RowDefinition Height="130*"/>
+                        <!--<RowDefinition Height="68*" />
+      <RowDefinition Height="79*" />-->
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,35.2,0.4" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                        <Image Name="imgKey"  Margin="8,8,0,8"   Source="/InnogrityLinePackingClient;component/resources/Innogrity.png" HorizontalAlignment="Left" Width="64" >
+                            <Image.Effect>
+                                <DropShadowEffect Color="Gray"   Opacity=".50" ShadowDepth="8" />
+                            </Image.Effect>
+                        </Image>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0.4,71,16.2,0.8">
+                        <!--<TextBlock Text="Name" />
+                        <TextBox x:Name="nameBox" Margin="-1,0,22,0"/>-->
+                        <TextBlock x:Name="txtPassword" Text="Password" />
+                        <PasswordBox x:Name="passwordBox" Margin="0,0,23,0"/>
+                    </StackPanel>
+
+
+
+                    <Label  Grid.Row="0" FontSize="18" Margin="0,17,138.2,0" Height="37" VerticalAlignment="Top" HorizontalAlignment="Right" Width="129" Grid.Column="1">Please Login
+                    </Label>
+                    <Button Content="Login" Grid.Column="1" HorizontalAlignment="Left" Margin="153.4,56.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="22" Click="Login_Click"/>
+                    <Button Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="32.4,57.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="22" Click="Cancle_Click"/>
+
+                </Grid>
+            </Border>
+        </Popup>
+
+    </Grid>
+</Window>
